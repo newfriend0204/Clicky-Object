@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public Button restartButton;
     public GameObject titleScreen;
     public GameObject isGamingScreen;
+    public GameObject pauseScreen;
     private AudioSource playerAudio;
     public AudioClip getScore;
     public AudioClip bomb;
@@ -48,8 +50,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         //if (Input.touchCount > 0) {
         //    Touch touch = Input.GetTouch(0);
         //    if (touch.phase == TouchPhase.Began)
@@ -59,11 +60,28 @@ public class GameManager : MonoBehaviour
         //    if (touch.phase == TouchPhase.Ended)
         //        Debug.Log("Ended : " + touch.position);
         //}
- 
+        if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
+            if (Input.GetKey(KeyCode.Escape)) {
+                GamePause();
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+            GamePause();
         if (life <= 0)
             GameOver();
         if (life > 5)
             life = 5;
+    }
+
+    public void GamePause() {
+        pauseScreen.gameObject.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void GameContinue() {
+        pauseScreen.gameObject.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void UpdateScore(int scoreToAdd) {
@@ -72,10 +90,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver() {
+        Time.timeScale = 1;
         gameOverText.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
         gameOverScore.gameObject.SetActive(true);
         scoreText.gameObject.SetActive(false);
+        pauseScreen.gameObject.SetActive(false);
         gameOverScore.text = "Score:" + score;
         isGameActive = false;
     }

@@ -5,9 +5,9 @@ public class Target : MonoBehaviour {
     private Rigidbody targetRb;
     private GameManager gameManager;
     private float minSpeed = 100;
-    private float maxSpeed = 140;
+    private float maxSpeed = 150;
     private float maxTorque = 10;
-    private float xRange = 2.3f;
+    private float xRange = 2.1f;
     private float ySpawnPos = -1;
 
     public int pointValue;
@@ -27,7 +27,7 @@ public class Target : MonoBehaviour {
     }
 
     private void OnMouseDown() {
-        if (gameManager.isGameActive) {
+        if (gameManager.isGameActive && Time.timeScale == 1) {
             gameManager.UpdateScore(pointValue);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot"))
