@@ -1,3 +1,7 @@
+Clicky_Object
+
+There is no reason to see the contents below by gitignore. :)
+
 Some files are over 100mb and replaced with Google Drive links.
 ->https://drive.google.com/drive/folders/1raBnRRiX_DzVHvg8wu3YG8_Ie6KUIqVi?usp=sharing
 
