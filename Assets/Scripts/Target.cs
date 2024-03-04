@@ -28,6 +28,7 @@ public class Target : MonoBehaviour {
 
     private void OnMouseDown() {
         if (gameManager.isGameActive && Time.timeScale == 1) {
+            gameManager.nextstageneed++;
             gameManager.UpdateScore(pointValue);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot"))

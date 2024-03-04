@@ -13,30 +13,37 @@ public class GameManager : MonoBehaviour
     public List<GameObject> targets;
     public List<GameObject> samples;
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI gameOverScore;
-    public Button restartButton;
+    public TextMeshProUGUI gameOverStage;
+    public TextMeshProUGUI stageText;
+    public TextMeshProUGUI stageupText;
     public GameObject titleScreen;
     public GameObject isGamingScreen;
     public GameObject pauseScreen;
+    public GameObject GameOverScreen;
     private AudioSource playerAudio;
     public AudioClip getScore;
     public AudioClip bomb;
     public AudioClip skull;
+    public AudioClip stageup;
     public bool isGameActive = false;
+    public bool GameOverValue = false;
     private int score;
-    private float spawnRate = 1.0f;
+    public float nowdifficulty;
+    public float spawnRate = 1.0f;
     public float life = 5.00f;
+    public int stage = 1;
+    public int nextstageneed = 0;
     // Start is called before the first frame update
     IEnumerator SpawnTarget() {
         while (isGameActive) {
-            yield return new WaitForSeconds(spawnRate);
+            yield return new WaitForSeconds(spawnRate / (nowdifficulty + (float)(stage * 0.07)));
             int index = Random.Range(0, targets.Count);
             Instantiate(targets[index]);
         }
     }
     IEnumerator waitStart() {
-        while (!isGameActive) {
+        while (!isGameActive && !GameOverValue) {
             yield return new WaitForSeconds(spawnRate);
             int index = Random.Range(0, samples.Count);
             Instantiate(samples[index]);
@@ -47,6 +54,7 @@ public class GameManager : MonoBehaviour
         playerAudio = GetComponent<AudioSource>();
         spawnRate = 1.9f;
         StartCoroutine(waitStart());
+        stageupText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -60,11 +68,10 @@ public class GameManager : MonoBehaviour
         //    if (touch.phase == TouchPhase.Ended)
         //        Debug.Log("Ended : " + touch.position);
         //}
+        //Debug.Log(spawnRate / (nowdifficulty + (float)(stage * 0.05)));
         if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
-            if (Input.GetKey(KeyCode.Escape)) {
+            if (Input.GetKey(KeyCode.Escape))
                 GamePause();
-            }
-
         }
         if (Input.GetKeyDown(KeyCode.T))
             GamePause();
@@ -72,6 +79,26 @@ public class GameManager : MonoBehaviour
             GameOver();
         if (life > 5)
             life = 5;
+        if (nextstageneed >= 30 || stage == 1 && nextstageneed >= 10 || stage == 2 && nextstageneed >= 13 || stage == 3 && nextstageneed >= 15 || stage == 4 && nextstageneed >= 17 || stage == 5 && nextstageneed >= 20 || stage == 6 && nextstageneed == 23 || stage == 7 && nextstageneed >= 25 || stage == 8 && nextstageneed >= 27) {
+            nextstageneed = 0;
+            stage++;
+            playerAudio.PlayOneShot(stageup, 0.65f);
+            stageupText.gameObject.SetActive(true);
+            InvokeRepeating("StageUp", 0.01f, 0.1f);
+        }
+        stageText.text = "Stage: " + stage;
+    }
+
+    public void StageUp() {
+        Color color = stageupText.GetComponent<TextMeshProUGUI>().color;
+        color.a -= 0.1f;
+        stageupText.GetComponent<TextMeshProUGUI>().color = color;
+        if (color.a <= 0) {
+            stageupText.gameObject.SetActive(false);
+            color.a = 1.0f;
+            stageupText.GetComponent<TextMeshProUGUI>().color = color;
+            CancelInvoke("StageUp");
+        }
     }
 
     public void GamePause() {
@@ -90,21 +117,21 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver() {
-        Time.timeScale = 1;
-        gameOverText.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);
-        gameOverScore.gameObject.SetActive(true);
-        scoreText.gameObject.SetActive(false);
-        pauseScreen.gameObject.SetActive(false);
-        gameOverScore.text = "Score:" + score;
         isGameActive = false;
+        GameOverValue = true;
+        Time.timeScale = 1;
+        life = 0;
+        GameOverScreen.gameObject.SetActive(true);
+        pauseScreen.gameObject.SetActive(false);
+        gameOverScore.text = "Score: " + score;
+        gameOverStage.text = "Stage: " + stage;
     }
 
     public void StartGame(float difficulty) {
         spawnRate = 1;
         isGameActive = true;
         score = 0;
-        spawnRate /= difficulty;
+        nowdifficulty = difficulty;
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
         titleScreen.gameObject.SetActive(false);
