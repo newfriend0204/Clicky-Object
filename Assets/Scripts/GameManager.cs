@@ -5,9 +5,9 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     //PlayerPrefs.SetInt("저장할변수이름", 변수값);
     //PlayerPrefs.Save();
     public List<GameObject> targets;
@@ -49,10 +49,9 @@ public class GameManager : MonoBehaviour
             Instantiate(samples[index]);
         }
     }
-    void Start()
-    {
+    void Start() {
         playerAudio = GetComponent<AudioSource>();
-        spawnRate = 1.9f;
+        spawnRate = 1.0f;
         StartCoroutine(waitStart());
         stageupText.gameObject.SetActive(false);
     }
@@ -123,6 +122,8 @@ public class GameManager : MonoBehaviour
         life = 0;
         GameOverScreen.gameObject.SetActive(true);
         pauseScreen.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
+        stageText.gameObject.SetActive(false);
         gameOverScore.text = "Score: " + score;
         gameOverStage.text = "Stage: " + stage;
     }
@@ -146,5 +147,8 @@ public class GameManager : MonoBehaviour
     }
     public void skullmusic() {
         playerAudio.PlayOneShot(skull, 1.0f);
+    }
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

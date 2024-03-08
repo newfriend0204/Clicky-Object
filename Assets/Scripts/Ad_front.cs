@@ -10,8 +10,11 @@ public class AdmobScreenAd : MonoBehaviour {
     string adUnitId;
 
     private InterstitialAd interstitialAd;
+    private GameManager gameManager;
+
 
     public void Start() {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         MobileAds.Initialize((InitializationStatus initStatus) => {
             //초기화 완료
         });
@@ -77,7 +80,6 @@ public class AdmobScreenAd : MonoBehaviour {
         };
         ad.OnAdFullScreenContentClosed += () => {
             Debug.Log("Interstitial ad full screen content closed.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         };
         ad.OnAdFullScreenContentFailed += (AdError error) => {
             Debug.LogError("Interstitial ad failed to open full screen content " +
@@ -88,19 +90,23 @@ public class AdmobScreenAd : MonoBehaviour {
     private void Awake() {
         DontDestroyOnLoad(gameObject);
     }
-    public void RestartGame() {
-        int random = rand.Next(1, 4);
-        Debug.Log("게임을 재시작 하겠다");
-        if (random == 1) {
+    private void Update() {
+        if (gameManager.life <= 0) {
+            ShowFrontAd();
+            Destroy(gameObject);
+        }
+    }
+    public void ShowFrontAd() {
+        int random = rand.Next(1, 11);
+        if (random <= 4) {
             if (interstitialAd != null && interstitialAd.CanShowAd()) {
                 Debug.Log("Showing interstitial ad.");
                 interstitialAd.Show();
             } else {
-                LoadInterstitialAd(); //광고 재로드
+                LoadInterstitialAd();
 
                 Debug.LogError("Interstitial ad is not ready yet.");
             }
-        } else
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
