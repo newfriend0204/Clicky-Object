@@ -7,7 +7,7 @@ public class Target : MonoBehaviour {
     private float minSpeed = 100;
     private float maxSpeed = 150;
     private float maxTorque = 10;
-    private float xRange = 2.1f;
+    private float xRange = 1.85f;
     private float ySpawnPos = -1;
 
     public int pointValue;
@@ -55,14 +55,25 @@ public class Target : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        Destroy(gameObject);
-        if (gameManager.isGameActive) {
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.transform.tag != "sensor" && collision.transform.tag != "wall")
+            targetRb.AddForce(Vector3.up * 20, ForceMode.Impulse);
+        if (collision.transform.tag == "sensor") {
+            Destroy(gameObject);
             if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot") && !gameObject.CompareTag("sample")) {
                 gameManager.life -= 1.0f;
             }
         }
     }
+
+    //private void OnTriggerEnter(Collider other) {
+    //    if (other.transform.tag == "sensor") {
+    //        Destroy(gameObject);
+    //        if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot") && !gameObject.CompareTag("sample")) {
+    //            gameManager.life -= 1.0f;
+    //        }
+    //    }
+    //}
 
     Vector3 RandomForce() {
         return Vector3.up * Random.Range(minSpeed, maxSpeed);
