@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     // Start is called before the first frame update
     IEnumerator SpawnTarget() {
         while (isGameActive) {
-            yield return new WaitForSeconds(spawnRate / (nowdifficulty + (float)(stage * 0.07)));
+            yield return new WaitForSeconds(spawnRate / (nowdifficulty + (float)(stage * 0.06)));
             int index = Random.Range(0, targets.Count);
             Instantiate(targets[index]);
         }
@@ -150,5 +150,8 @@ public class GameManager : MonoBehaviour {
     }
     public void RestartGame() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void ShowTutorial() {
+        SceneManager.LoadScene("Tutorial");
     }
 }

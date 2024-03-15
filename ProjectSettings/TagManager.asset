@@ -12,6 +12,8 @@ TagManager:
   - good12
   - bad_lot
   - sample
+  - sensor
+  - wall
   layers:
   - Default
   - TransparentFX
