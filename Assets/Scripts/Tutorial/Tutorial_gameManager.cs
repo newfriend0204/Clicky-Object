@@ -5,20 +5,15 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using System;
 //using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class Tuorial_gameManager : MonoBehaviour {
     public List<GameObject> targets;
-    public List<GameObject> samples;
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI gameOverScore;
-    public TextMeshProUGUI gameOverStage;
     public TextMeshProUGUI stageText;
     public TextMeshProUGUI stageupText;
-    public GameObject titleScreen;
     public GameObject isGamingScreen;
-    public GameObject pauseScreen;
-    public GameObject GameOverScreen;
     private AudioSource playerAudio;
     public AudioClip getScore;
     public AudioClip bomb;
@@ -35,21 +30,11 @@ public class Tuorial_gameManager : MonoBehaviour {
     void Start() {
         playerAudio = GetComponent<AudioSource>();
         stageupText.gameObject.SetActive(false);
-
+        //Instantiate(targets[0]);
     }
 
     // Update is called once per frame
     void Update() {
-        if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
-            if (Input.GetKey(KeyCode.Escape))
-                GamePause();
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-            GamePause();
-        if (life <= 0)
-            GameOver();
-        if (life > 5)
-            life = 5;
         if (nextstageneed >= 30 || stage == 1 && nextstageneed >= 10 || stage == 2 && nextstageneed >= 13 || stage == 3 && nextstageneed >= 15 || stage == 4 && nextstageneed >= 17 || stage == 5 && nextstageneed >= 20 || stage == 6 && nextstageneed == 23 || stage == 7 && nextstageneed >= 25 || stage == 8 && nextstageneed >= 27) {
             nextstageneed = 0;
             stage++;
@@ -71,32 +56,9 @@ public class Tuorial_gameManager : MonoBehaviour {
         }
     }
 
-    public void GamePause() {
-        pauseScreen.gameObject.SetActive(true);
-        Time.timeScale = 0;
-    }
-
-    public void GameContinue() {
-        pauseScreen.gameObject.SetActive(false);
-        Time.timeScale = 1;
-    }
-
     public void UpdateScore(int scoreToAdd) {
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
-    }
-
-    public void GameOver() {
-        isGameActive = false;
-        GameOverValue = true;
-        Time.timeScale = 1;
-        life = 0;
-        GameOverScreen.gameObject.SetActive(true);
-        pauseScreen.gameObject.SetActive(false);
-        scoreText.gameObject.SetActive(false);
-        stageText.gameObject.SetActive(false);
-        gameOverScore.text = "Score: " + score;
-        gameOverStage.text = "Stage: " + stage;
     }
     public void music() {
         playerAudio.PlayOneShot(getScore, 1.0f);
