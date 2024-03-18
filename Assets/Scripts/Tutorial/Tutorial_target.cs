@@ -4,11 +4,15 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 public class Tutorial_target : MonoBehaviour {  
     private Rigidbody targetRb;
     private GameManager gameManager;
     public GameObject FocusScreen;
     public GameObject FocusPlane;
+    public GameObject Show_Inform;
+    public GameObject Show_Change;
+    public GameObject Bad_Prop;
     private AudioSource playerAudio;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI stageText;
@@ -22,15 +26,45 @@ public class Tutorial_target : MonoBehaviour {
         playerAudio = GetComponent<AudioSource>();
         targetRb = GetComponent<Rigidbody>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        //targetRb.AddForce(Vector3.up * 125, ForceMode.Impulse);
-        //targetRb.AddTorque(5, 5, 5, ForceMode.Impulse);
-        //transform.position = new Vector3(0, -1, 0);
-        Invoke("ShowInformation", 1.0f);
-        //Invoke("Stop", 1.0f);
+        FocusPlane.gameObject.SetActive(true);
+        Show_Inform.gameObject.SetActive(true);
     }
 
-    void ShowInformation() {
+    public void Next_1() {
+        FocusPlane.gameObject.SetActive(false);
+        Show_Inform.gameObject.SetActive(false);
+        Invoke("Next_2", 1.0f);
+    }
+
+    void Next_2() {
+        transform.position = new Vector3(0, -1, 0);
+        targetRb.AddForce(Vector3.up * 1250, ForceMode.Impulse);
+        targetRb.AddTorque(50, 50, 50, ForceMode.Impulse);
+        Invoke("Stop", 1.0f);
+    }
+
+    void Next_3() {
         FocusPlane.gameObject.SetActive(true);
+        Show_Change.gameObject.SetActive(true);
+    }
+
+    public void Next_4() {
+        FocusPlane.gameObject.SetActive(false);
+        Show_Change.gameObject.SetActive(false);
+        Invoke("Next_5", 1.0f);
+    }
+    //heart4.gameObject.SetActive(false);
+    //        scoreText.text = "Score: 456";
+    //        playerAudio.PlayOneShot(bomb, 1.0f);
+    //        Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+    //transform.position = new Vector3(-10f, 4, -4);
+    //Time.timeScale = 1.0f;
+    //        FocusScreen.gameObject.SetActive(false);
+    //        Invoke("Next_3", 1.5f);
+    //bad prop
+    void Next_5() {
+        Instantiate(Bad_Prop);
+        Invoke("Stop", 1.0f);
     }
 
     void Stop() {
@@ -52,6 +86,7 @@ public class Tutorial_target : MonoBehaviour {
             transform.position = new Vector3(-9.43f, 5.93f, -5.0796f);
             Time.timeScale = 1.0f;
             FocusScreen.gameObject.SetActive(false);
+            Invoke("Next_3", 1.5f);
         }
     }
 
