@@ -72,6 +72,12 @@ public class Tutorial_target : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         Application.targetFrameRate = 60;
+        if (Application.platform == RuntimePlatform.Android) {
+            if (Input.GetKey(KeyCode.Escape))
+                SceneManager.LoadScene("Scene");
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+            SceneManager.LoadScene("Scene");
     }
 
     private void OnMouseDown() {

@@ -66,6 +66,7 @@ public class Target : MonoBehaviour {
             if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot") && !gameObject.CompareTag("sample")) {
                 gameManager.life -= 1.0f;
                 shake_screen.GetComponent<Shake_Screen>().ShakeStart();
+                gameManager.skullmusic();
             }
         }
     }

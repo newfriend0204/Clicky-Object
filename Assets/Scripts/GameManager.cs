@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     public GameObject isGamingScreen;
     public GameObject pauseScreen;
     public GameObject GameOverScreen;
+    public Image fade;
     private AudioSource playerAudio;
     public AudioClip getScore;
     public AudioClip bomb;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour {
     public bool GameOverValue = false;
     private int score;
     public float nowdifficulty;
+    public float select_difficulty;
     public float spawnRate = 1.0f;
     public float life = 5.00f;
     public int stage = 1;
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour {
     // Start is called before the first frame update
     IEnumerator SpawnTarget() {
         while (isGameActive) {
-            yield return new WaitForSeconds(spawnRate / (nowdifficulty + (float)(stage * 0.06)));
+            yield return new WaitForSeconds(spawnRate / (nowdifficulty + (float)(stage * 0.07)));
             int index = Random.Range(0, targets.Count);
             Instantiate(targets[index]);
         }
@@ -58,16 +60,6 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        //if (Input.touchCount > 0) {
-        //    Touch touch = Input.GetTouch(0);
-        //    if (touch.phase == TouchPhase.Began)
-        //        Debug.Log("Began : " + touch.position);
-        //    if (touch.phase == TouchPhase.Moved)
-        //        Debug.Log("Moved : " + touch.position);
-        //    if (touch.phase == TouchPhase.Ended)
-        //        Debug.Log("Ended : " + touch.position);
-        //}
-        //Debug.Log(spawnRate / (nowdifficulty + (float)(stage * 0.05)));
         if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
             if (Input.GetKey(KeyCode.Escape))
                 GamePause();
@@ -100,7 +92,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void GamePause() {
+    public void GamePause() {   
         pauseScreen.gameObject.SetActive(true);
         Time.timeScale = 0;
     }
@@ -129,14 +121,43 @@ public class GameManager : MonoBehaviour {
     }
 
     public void StartGame(float difficulty) {
+        select_difficulty = difficulty;
+        InvokeRepeating("Fade_in", 0.01f, 0.1f);
+        //시작하기 전까진 비활성화 시킨다, 페이드인아웃 시간 더 빠르게 한다, 씬 안바뀐다
+    }
+
+    public void Play() {
         spawnRate = 1;
         isGameActive = true;
         score = 0;
-        nowdifficulty = difficulty;
+        nowdifficulty = select_difficulty;
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
         titleScreen.gameObject.SetActive(false);
         isGamingScreen.gameObject.SetActive(true);
+    }
+
+    public void Fade_in() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a += 0.1f;
+        fade.GetComponent<Image>().color = color;
+        if (color.a >= 255) {
+            CancelInvoke("Fade_out");
+            Invoke("Fade_out", 0.3f);
+        }
+    }
+
+    public void Fade_out() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a -= 0.1f;
+        fade.GetComponent<Image>().color = color;
+        if (color.a <= 0) {
+            fade.gameObject.SetActive(false);
+            color.a = 0f;
+            fade.GetComponent<Image>().color = color;
+            CancelInvoke("Fade_out");
+            Invoke("Play", 0f);
+        }
     }
 
     public void music() {

@@ -55,7 +55,6 @@ public class Tutorial_badprop : MonoBehaviour
     }
 
     void Update() {
-        Application.targetFrameRate = 60;
     }
 
     void Next_6() {
