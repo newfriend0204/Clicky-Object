@@ -4,6 +4,7 @@ using UnityEngine;
 public class Target : MonoBehaviour {
     private Rigidbody targetRb;
     private GameManager gameManager;
+    GameObject shake_screen;
     private float minSpeed = 100;
     private float maxSpeed = 150;
     private float maxTorque = 10;
@@ -14,6 +15,7 @@ public class Target : MonoBehaviour {
     public ParticleSystem explosionParticle;
     // Start is called before the first frame update
     void Start() {
+        shake_screen = GameObject.Find("Main Camera");
         targetRb = GetComponent<Rigidbody>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         targetRb.AddForce(RandomForce(), ForceMode.Impulse);
@@ -48,6 +50,7 @@ public class Target : MonoBehaviour {
             else if (gameObject.CompareTag("good12") && !(gameManager.life >= 5))
                 gameManager.life += 0.14f;
             else if (gameObject.CompareTag("bad_lot")) {
+                shake_screen.GetComponent<Shake_Screen>().ShakeStart();
                 gameManager.bombmusic();
                 gameManager.life -= 0.75f;
             }
@@ -62,18 +65,10 @@ public class Target : MonoBehaviour {
             Destroy(gameObject);
             if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot") && !gameObject.CompareTag("sample")) {
                 gameManager.life -= 1.0f;
+                shake_screen.GetComponent<Shake_Screen>().ShakeStart();
             }
         }
     }
-
-    //private void OnTriggerEnter(Collider other) {
-    //    if (other.transform.tag == "sensor") {
-    //        Destroy(gameObject);
-    //        if (!gameObject.CompareTag("Bad") && !gameObject.CompareTag("bad_lot") && !gameObject.CompareTag("sample")) {
-    //            gameManager.life -= 1.0f;
-    //        }
-    //    }
-    //}
 
     Vector3 RandomForce() {
         return Vector3.up * Random.Range(minSpeed, maxSpeed);
