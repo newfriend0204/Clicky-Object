@@ -1765,6 +1765,7 @@ RectTransform:
   - {fileID: 392119510}
   - {fileID: 1006103502}
   - {fileID: 2127863140}
+  - {fileID: 1654641881}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3798,8 +3799,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "              \u2191\n       \u250C\u2500\u2518\n       \u2502\n\uC2A4\uD14C\uC774\uC9C0
-    \uC99D\uAC00\n(\uBA87\uBA87 \uBB3C\uCCB4 \uD074\uB9AD\uC2DC \uB298\uC5B4\uB0A8)\n     
+  m_text: "              \u2191\n       \u250C\u2500\u2518\n       \u2502\n     \uC2A4\uD14C\uC774\uC9C0
+    \uC99D\uAC00\n(\uC5B4\uB5A4 \uBB3C\uCCB4\uB4E0 \uD074\uB9AD\uC2DC \uB298\uC5B4\uB0A8)\n     
     \u2502\n      \u2502\n       \u2193"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fe6193d62cb6ec458000b6e838b5676, type: 2}
@@ -3877,6 +3878,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621855913}
   m_CullTransparentMesh: 1
+--- !u!1 &1654641878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1654641881}
+  - component: {fileID: 1654641880}
+  - component: {fileID: 1654641879}
+  m_Layer: 5
+  m_Name: Fade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1654641879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654641878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1654641880
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654641878}
+  m_CullTransparentMesh: 1
+--- !u!224 &1654641881
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654641878}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 420.4335, y: 420.4335, z: 420.4335}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 859680734}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1710821729
 GameObject:
   m_ObjectHideFlags: 0
@@ -4631,6 +4707,7 @@ MonoBehaviour:
   isGamingScreen: {fileID: 1347775598}
   pauseScreen: {fileID: 0}
   GameOverScreen: {fileID: 0}
+  fade: {fileID: 0}
   getScore: {fileID: 8300000, guid: cd7af0ac9963a2a4f8e469eae69fb5cf, type: 3}
   bomb: {fileID: 8300000, guid: e90b8cef010e8fe4f8db494954275cea, type: 3}
   skull: {fileID: 8300000, guid: 5484f197cf0fc5944b285c5de82555ba, type: 3}
@@ -4638,6 +4715,7 @@ MonoBehaviour:
   isGameActive: 0
   GameOverValue: 0
   nowdifficulty: 0
+  select_difficulty: 0
   spawnRate: 1
   life: 5
   stage: 1
@@ -5650,6 +5728,7 @@ MonoBehaviour:
   getScore: {fileID: 8300000, guid: cd7af0ac9963a2a4f8e469eae69fb5cf, type: 3}
   heart4: {fileID: 864802389}
   explosionParticle: {fileID: 3199346384015752365, guid: 307229a5540374aae98859caad2128a3, type: 3}
+  fade: {fileID: 1654641878}
 --- !u!4 &9182388058269591345
 Transform:
   m_ObjectHideFlags: 0

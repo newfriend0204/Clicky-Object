@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -22,8 +21,24 @@ public class Tutorial_target : MonoBehaviour {
     public AudioClip getScore;
     public GameObject heart4;
     public ParticleSystem explosionParticle;
+    public GameObject fade;
     // Start is called before the first frame update
+
+    void Fade_out_start() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a -= 0.03f;
+        fade.GetComponent<Image>().color = color;
+        if (color.a <= 0) {
+            fade.gameObject.SetActive(false);
+            color.a = 0f;
+            fade.GetComponent<Image>().color = color;
+            CancelInvoke("Fade_out_start");
+        }
+    }
+
     void Start() {
+        fade.gameObject.SetActive(true);
+        InvokeRepeating("Fade_out_start", 0.01f, 0.01f);
         shake_screen = GameObject.Find("Main Camera");
         playerAudio = GetComponent<AudioSource>();
         targetRb = GetComponent<Rigidbody>();
@@ -65,8 +80,18 @@ public class Tutorial_target : MonoBehaviour {
         FocusScreen.gameObject.SetActive(true);
     }
 
+    void Fade_in_tutorial() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a += 0.03f;
+        if (color.a >= 1.0f) {
+            CancelInvoke("Fade_in_tutorial");
+            SceneManager.LoadScene("Scene");
+        }
+        fade.GetComponent<Image>().color = color;
+    }
+
     public void Quit() {
-        SceneManager.LoadScene("Scene");
+        InvokeRepeating("Fade_in_tutorial", 0.01f, 0.01f);
     }
 
     // Update is called once per frame
@@ -74,10 +99,10 @@ public class Tutorial_target : MonoBehaviour {
         Application.targetFrameRate = 60;
         if (Application.platform == RuntimePlatform.Android) {
             if (Input.GetKey(KeyCode.Escape))
-                SceneManager.LoadScene("Scene");
+                InvokeRepeating("Fade_in_tutorial", 0.01f, 0.01f);
         }
         if (Input.GetKeyDown(KeyCode.T))
-            SceneManager.LoadScene("Scene");
+            InvokeRepeating("Fade_in_tutorial", 0.01f, 0.01f);
     }
 
     private void OnMouseDown() {

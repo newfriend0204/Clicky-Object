@@ -51,7 +51,25 @@ public class GameManager : MonoBehaviour {
             Instantiate(samples[index]);
         }
     }
+
+    void Fade_out_gamestart() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a -= 0.03f;
+        fade.GetComponent<Image>().color = color;
+        if (color.a <= 0) {
+            fade.gameObject.SetActive(false);
+            color.a = 0f;
+            fade.GetComponent<Image>().color = color;
+            CancelInvoke("Fade_out_gamestart");
+        }
+    }
+
     void Start() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a = 1;
+        fade.GetComponent<Image>().color = color;
+        fade.gameObject.SetActive(true);
+        InvokeRepeating("Fade_out_gamestart", 0.01f, 0.01f);
         playerAudio = GetComponent<AudioSource>();
         spawnRate = 1.0f;
         StartCoroutine(waitStart());
@@ -122,8 +140,8 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame(float difficulty) {
         select_difficulty = difficulty;
-        InvokeRepeating("Fade_in", 0.01f, 0.1f);
-        //시작하기 전까진 비활성화 시킨다, 페이드인아웃 시간 더 빠르게 한다, 씬 안바뀐다
+        fade.gameObject.SetActive(true);
+        InvokeRepeating("Fade_in_start", 0.01f, 0.01f);
     }
 
     public void Play() {
@@ -137,27 +155,48 @@ public class GameManager : MonoBehaviour {
         isGamingScreen.gameObject.SetActive(true);
     }
 
-    public void Fade_in() {
+    public void Fade_in_start() {
         Color color = fade.GetComponent<Image>().color;
-        color.a += 0.1f;
-        fade.GetComponent<Image>().color = color;
-        if (color.a >= 255) {
-            CancelInvoke("Fade_out");
-            Invoke("Fade_out", 0.3f);
+        color.a += 0.03f;
+        if (color.a >= 1.0f) {
+            CancelInvoke("Fade_in_start");
+            Play();
+            InvokeRepeating("Fade_out_start", 0.01f, 0.01f);
         }
+        fade.GetComponent<Image>().color = color;
     }
 
-    public void Fade_out() {
+    public void Fade_out_start() {
         Color color = fade.GetComponent<Image>().color;
-        color.a -= 0.1f;
+        color.a -= 0.03f;
         fade.GetComponent<Image>().color = color;
         if (color.a <= 0) {
             fade.gameObject.SetActive(false);
             color.a = 0f;
             fade.GetComponent<Image>().color = color;
-            CancelInvoke("Fade_out");
-            Invoke("Play", 0f);
+            CancelInvoke("Fade_out_start");
+            fade.gameObject.SetActive(false);
         }
+    }
+
+    public void Fade_in_restart() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a += 0.03f;
+        if (color.a >= 1.0f) {
+            CancelInvoke("Fade_in_restart");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        fade.GetComponent<Image>().color = color;
+    }
+
+    public void Fade_in_tutorial() {
+        Color color = fade.GetComponent<Image>().color;
+        color.a += 0.03f;
+        if (color.a >= 1.0f) {
+            CancelInvoke("Fade_in_tutorial");
+            SceneManager.LoadScene("Tutorial");
+        }
+        fade.GetComponent<Image>().color = color;
     }
 
     public void music() {
@@ -170,9 +209,11 @@ public class GameManager : MonoBehaviour {
         playerAudio.PlayOneShot(skull, 1.0f);
     }
     public void RestartGame() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        fade.gameObject.SetActive(true);
+        InvokeRepeating("Fade_in_restart", 0.01f, 0.01f);
     }
     public void ShowTutorial() {
-        SceneManager.LoadScene("Tutorial");
+        fade.gameObject.SetActive(true);
+        InvokeRepeating("Fade_in_tutorial", 0.01f, 0.01f);
     }
 }

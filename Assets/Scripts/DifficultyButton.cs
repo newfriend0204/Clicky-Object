@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,13 @@ public class DifficultyButton : MonoBehaviour
 {
     private Button button;
     private GameManager gameManager;
+    public AudioClip start;
+    private AudioSource playerAudio;
     public float difficulty;
     // Start is called before the first frame update
     void Start()
     {
+        playerAudio = GetComponent<AudioSource>();
         button = GetComponent<Button>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         button.onClick.AddListener(SetDifficulty);
@@ -23,7 +27,7 @@ public class DifficultyButton : MonoBehaviour
     }
 
     void SetDifficulty() {
-       // Debug.Log(button.gameObject.name + " was clicked");
         gameManager.StartGame(difficulty);
+        playerAudio.PlayOneShot(start, 1.0f);
     }
 }
