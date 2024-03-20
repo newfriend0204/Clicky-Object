@@ -25,6 +25,7 @@ public class Tutorial_target : MonoBehaviour {
     // Start is called before the first frame update
 
     void Fade_out_start() {
+        Time.timeScale = 1f;
         Color color = fade.GetComponent<Image>().color;
         color.a -= 0.03f;
         fade.GetComponent<Image>().color = color;
@@ -81,6 +82,7 @@ public class Tutorial_target : MonoBehaviour {
     }
 
     void Fade_in_tutorial() {
+        Time.timeScale = 1f;
         Color color = fade.GetComponent<Image>().color;
         color.a += 0.03f;
         if (color.a >= 1.0f) {
