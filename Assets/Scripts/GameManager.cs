@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
     public float life = 5.00f;
     public int stage = 1;
     public int nextstageneed = 0;
+    public int ad = 0;
     // Start is called before the first frame update
     IEnumerator SpawnTarget() {
         while (isGameActive) {
@@ -197,6 +198,10 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene("Tutorial");
         }
         fade.GetComponent<Image>().color = color;
+    }
+    
+    public void Remove_ad() {
+        ad = 1;
     }
 
     public void music() {

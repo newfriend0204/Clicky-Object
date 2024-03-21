@@ -8,8 +8,10 @@ public class AdmobBannerAd : MonoBehaviour {
     string adUnitId;
 
     BannerView _bannerView;
+    private GameManager gameManager;
 
     public void Start() {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         MobileAds.Initialize((InitializationStatus initStatus) => {
             //초기화 완료
         });
@@ -21,8 +23,12 @@ public class AdmobBannerAd : MonoBehaviour {
 #else
             adUnitId = "unexpected_platform";
 #endif
-
         LoadAd();
+    }
+
+    public void Update() {
+        if (gameManager.ad == 1)
+            DestroyAd();
     }
 
     public void LoadAd() //광고 로드

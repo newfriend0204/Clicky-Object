@@ -87,9 +87,6 @@ public class AdmobScreenAd : MonoBehaviour {
         };
     }
     System.Random rand = new System.Random();
-    private void Awake() {
-        DontDestroyOnLoad(gameObject);
-    }
     private void Update() {
         if (gameManager.life <= 0) {
             ShowFrontAd();
@@ -98,6 +95,8 @@ public class AdmobScreenAd : MonoBehaviour {
     }
     public void ShowFrontAd() {
         int random = rand.Next(1, 11);
+        if (gameManager.ad == 1)
+            random = 100;
         if (random <= 4) {
             if (interstitialAd != null && interstitialAd.CanShowAd()) {
                 Debug.Log("Showing interstitial ad.");
