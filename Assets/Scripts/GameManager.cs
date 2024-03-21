@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
-//using static UnityEditor.Timeline.TimelinePlaybackControls;
+using Application = UnityEngine.Application;
+using Image = UnityEngine.UI.Image;
 
 public class GameManager : MonoBehaviour {
-    //PlayerPrefs.SetInt("저장할변수이름", 변수값);
-    //PlayerPrefs.Save();
     public List<GameObject> targets;
     public List<GameObject> samples;
     public TextMeshProUGUI scoreText;
@@ -77,7 +74,6 @@ public class GameManager : MonoBehaviour {
         stageupText.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update() {
         if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
             if (Input.GetKey(KeyCode.Escape))
@@ -199,7 +195,7 @@ public class GameManager : MonoBehaviour {
         }
         fade.GetComponent<Image>().color = color;
     }
-    
+
     public void Remove_ad() {
         ad = 1;
     }
