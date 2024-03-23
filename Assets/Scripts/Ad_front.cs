@@ -51,7 +51,7 @@ public class AdmobScreenAd : MonoBehaviour {
                     return;
                 }
 
-                Debug.Log("Interstitial ad loaded with response : "
+                Debug.Log("Interstitial ad loaded with response :"
                           + ad.GetResponseInfo());
 
                 interstitialAd = ad;

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     public GameObject isGamingScreen;
     public GameObject pauseScreen;
     public GameObject GameOverScreen;
+    public GameObject RemoveAd;
     public Image fade;
     private AudioSource playerAudio;
     public AudioClip getScore;
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
+        Debug.Log("게임 시작");
         Color color = fade.GetComponent<Image>().color;
         color.a = 1;
         fade.GetComponent<Image>().color = color;
@@ -75,6 +77,10 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
+        //if (ad == 1)
+        //    RemoveAd.gameObject.SetActive(false);
+        if (PlayerPrefs.HasKey("Purchase_ad"))
+            ad = PlayerPrefs.GetInt("Purchase_ad");
         if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
             if (Input.GetKey(KeyCode.Escape))
                 GamePause();
@@ -123,10 +129,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameOver() {
+        life = -1;
         isGameActive = false;
         GameOverValue = true;
         Time.timeScale = 1;
-        life = 0;
         GameOverScreen.gameObject.SetActive(true);
         pauseScreen.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
@@ -210,6 +216,8 @@ public class GameManager : MonoBehaviour {
         playerAudio.PlayOneShot(skull, 1.0f);
     }
     public void RestartGame() {
+        PlayerPrefs.SetInt("Purchase_ad", ad);
+        PlayerPrefs.Save();
         fade.gameObject.SetActive(true);
         InvokeRepeating("Fade_in_restart", 0.01f, 0.01f);
     }

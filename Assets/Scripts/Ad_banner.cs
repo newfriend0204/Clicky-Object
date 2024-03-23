@@ -9,6 +9,7 @@ public class AdmobBannerAd : MonoBehaviour {
 
     BannerView _bannerView;
     private GameManager gameManager;
+    private int removead;
 
     public void Start() {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -27,8 +28,11 @@ public class AdmobBannerAd : MonoBehaviour {
     }
 
     public void Update() {
-        if (gameManager.ad == 1)
+        if (PlayerPrefs.HasKey("Purchase_ad"))
+            removead = PlayerPrefs.GetInt("Purchase_ad");
+        if (gameManager.ad == 1 || removead == 1) {
             DestroyAd();
+        }
     }
 
     public void LoadAd() //±¤°í ·Îµå
