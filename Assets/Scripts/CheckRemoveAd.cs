@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Purchasing; // Unity IAP 네임스페이스 추가
 
-public class CheckRemoveAd : MonoBehaviour {
+public class CheckRemoveAd : MonoBehaviour, IStoreListener {
     private static IStoreController m_StoreController; // 인앱 구매를 위한 스토어 컨트롤러 참조
 
     private string removeAdProductId = "remove_ad"; // 광고 제거 상품의 ID
@@ -23,33 +23,33 @@ public class CheckRemoveAd : MonoBehaviour {
 
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         builder.AddProduct(removeAdProductId, ProductType.NonConsumable); // 광고 제거 상품 추가
-        //UnityPurchasing.Initialize(this, builder);
+        UnityPurchasing.Initialize(this, builder);
     }
 
     private bool IsInitialized() {
         return m_StoreController != null;
     }
 
-    //public void OnInitialized(IStoreController controller, IExtensionProvider extensions) {
-    //    m_StoreController = controller;
-    //}
+    public void OnInitialized(IStoreController controller, IExtensionProvider extensions) {
+        m_StoreController = controller;
+    }
 
-    //public void OnInitializeFailed(InitializationFailureReason error) {
-    //    Debug.Log("Unity IAP 초기화 실패: " + error);
-    //}
+    public void OnInitializeFailed(InitializationFailureReason error) {
+        Debug.Log("Unity IAP 초기화 실패: " + error);
+    }
 
-    //public void OnInitializeFailed(InitializationFailureReason error, string message) {
-    //    Debug.Log("Unity IAP 초기화 실패: " + error + ", 메시지: " + message);
-    //}
+    public void OnInitializeFailed(InitializationFailureReason error, string message) {
+        Debug.Log("Unity IAP 초기화 실패: " + error + ", 메시지: " + message);
+    }
 
 
-    //public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
-    //    return PurchaseProcessingResult.Complete;
-    //}
+    public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
+        return PurchaseProcessingResult.Complete;
+    }
 
-    //public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason) {
-    //    Debug.Log(string.Format("구매 실패: {0}, 이유: {1}", product.definition.id, failureReason));
-    //}
+    public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason) {
+        Debug.Log(string.Format("구매 실패: {0}, 이유: {1}", product.definition.id, failureReason));
+    }
 
     void CheckPurchase() {
         Product product = m_StoreController.products.WithID(removeAdProductId);
