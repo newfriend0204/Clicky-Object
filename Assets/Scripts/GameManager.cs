@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour {
     public GameObject pauseScreen;
     public GameObject GameOverScreen;
     public GameObject RemoveAd;
+    public GameObject GameOverEasy;
+    public GameObject GameOverMedium;
+    public GameObject GameOverHard;
+    public GameObject ThankYou;
     public Image fade;
     private AudioSource playerAudio;
     public AudioClip getScore;
@@ -29,12 +33,14 @@ public class GameManager : MonoBehaviour {
     public bool GameOverValue = false;
     private int score;
     public float nowdifficulty;
+    public int gamedifficulty;
     public float select_difficulty;
     public float spawnRate = 1.0f;
     public float life = 5.00f;
     public int stage = 1;
     public int nextstageneed = 0;
     public int ad = 0;
+
     // Start is called before the first frame update
     IEnumerator SpawnTarget() {
         while (isGameActive) {
@@ -77,8 +83,10 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
-        //if (ad == 1)
-        //    RemoveAd.gameObject.SetActive(false);
+        if (ad == 1) {
+            RemoveAd.gameObject.SetActive(false);
+            ThankYou.gameObject.SetActive(true);
+        }
         if (PlayerPrefs.HasKey("Purchase_ad"))
             ad = PlayerPrefs.GetInt("Purchase_ad");
         if (Application.platform == RuntimePlatform.Android && isGameActive == true) {
@@ -137,11 +145,24 @@ public class GameManager : MonoBehaviour {
         pauseScreen.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         stageText.gameObject.SetActive(false);
+        Debug.Log("점수 공개");
+        if (gamedifficulty == 1)
+            GameOverEasy.gameObject.SetActive(true);
+        if (gamedifficulty == 2)
+            GameOverMedium.gameObject.SetActive(true);
+        if (gamedifficulty == 3)
+            GameOverHard.gameObject.SetActive(true);
         gameOverScore.text = "Score: " + score;
         gameOverStage.text = "Stage: " + stage;
     }
 
     public void StartGame(float difficulty) {
+        if (difficulty == 1.3f)
+            gamedifficulty = 1;
+        if (difficulty == 1.5f)
+            gamedifficulty = 2;
+        if (difficulty == 1.7f)
+            gamedifficulty = 3;
         select_difficulty = difficulty;
         fade.gameObject.SetActive(true);
         InvokeRepeating("Fade_in_start", 0.01f, 0.01f);
