@@ -1,20 +1,19 @@
-Clicky_Object
+# Clicky_Object
 
-There is no reason to see the contents below by gitignore. :)
+**Clicky_Object**는 간단한 **클릭 액션 게임**입니다.  
+화면 아래에서 위로 날아오는 다양한 물체를 클릭하여 점수를 얻으세요.  
+하지만 **폭탄**과 **해골**은 반드시 피해야 합니다.
+추가로, **광고 시스템**까지 연동되어 있습니다.
 
-Some files are over 100mb and replaced with Google Drive links.
-->https://drive.google.com/drive/folders/1raBnRRiX_DzVHvg8wu3YG8_Ie6KUIqVi?usp=sharing
+---
 
-Here's the route.
+## 게임 방법
+1. **화면 아래에서 위로 날아오는 물체**를 클릭해 점수를 획득하세요.
+2. **폭탄**과 **해골**은 클릭하지 마세요 — 목숨을 잃습니다.
 
-ClickyObject\Library\Bee\artifacts\Android\il2cppOutput\build\arm64-v8a
-libil2cpp.dbg.so
+---
 
-ClickyObject\Library\Bee\artifacts\Android\iz17e
-libil2cpp.so
-
-ClickyObject\Library\Bee\artifacts\objcopy_b9ry
-libil2cpp.dbg.so
-
-ClickyObject\Library\Bee\artifacts\objcopy_5lmi
-libil2cpp.dbg.so
+## 한마디
+몇몇 파일들이 소실될 가능성이 있으므로 아래 링크를 남겨둡니다.
+🔗 **[Google Drive 다운로드 링크](https://drive.google.com/drive/folders/1raBnRRiX_DzVHvg8wu3YG8_Ie6KUIqVi?usp=sharing)**
+중학교 1학년 겨울방학에 만든 간단한 게임입니다. 처음으로 Google Play Store에 앱을 올리고 광고, 인앱 구매 기능까지 재현한 포트폴리오입니다.
